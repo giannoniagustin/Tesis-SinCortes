@@ -1,6 +1,7 @@
 package com.example.gianno.tesis;
 
 
+import android.content.Context;
 import android.content.IntentSender;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
@@ -15,19 +16,26 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.HashMap;
+
 public class MapsActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    private static Context context;
     private GoogleMap mMap; // Debería ser null si Google Play services APK no está disponible.
     private GoogleApiClient mGoogleApiClient;
     public static final String TAG = MapsActivity.class.getSimpleName();
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private LocationRequest mLocationRequest;
+    private HashMap<String,Object> parametros;
+    LatLng latLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MapsActivity.context = getApplicationContext();
         super.onCreate(savedInstanceState);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -40,6 +48,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(10 * 1000)        // 10 segundos, en milisegundos
                 .setFastestInterval(1 * 1000); // 1 segundo, en milisegundos
+
 
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
@@ -70,6 +79,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
                     .getMap();
             // Chequea si tuvimos éxito en obtener el mapa.
             if (mMap != null) {
+
                 setUpMap();
             }
         }
@@ -77,7 +87,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
 
 
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+
+
 
     }
 
@@ -91,6 +102,11 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
         else {
             handleNewLocation(location);
         }
+        parametros=new HashMap<String, Object>();
+        parametros.put("mMap", mMap);
+        parametros.put("PosicionActual", latLng);
+        ObtenerCortesBD cortesBd =new ObtenerCortesBD();
+        cortesBd.execute(parametros, null, null);
     }
 
     private void handleNewLocation(Location location) {
@@ -98,11 +114,11 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
 
-        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+         latLng = new LatLng(currentLatitude, currentLongitude);
 
         MarkerOptions options = new MarkerOptions()
                 .position(latLng)
-                .title("Ud. esta aquí!");
+                .title("Ud. esta aquí!").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -134,5 +150,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
     //Este nuevo método se llama cada vez que una nueva ubicación es detectada por servicios de Google Play
     public void onLocationChanged(Location location) {
         handleNewLocation(location);
+    }
+
+    public static Context getAppContext() {
+        return context;
     }
 }
