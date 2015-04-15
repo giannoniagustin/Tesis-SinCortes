@@ -2,6 +2,7 @@ package com.example.gianno.tesis;
 
 import android.os.AsyncTask;
 
+import com.example.gianno.tesis.Peticiones.Post;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -35,27 +36,13 @@ public class ObtenerCortesBD extends AsyncTask <HashMap<String,Object>,Void,List
 
     @Override
     protected List<Corte> doInBackground(HashMap<String,Object>... params) {
-        HashMap<String,Object> Parametros=params[0];
-        //Obtenemos el hashmap de los parametos
-        mMap=(GoogleMap)Parametros.get("mMap");
-        String latitud=Double.toString(((LatLng) Parametros.get("PosicionActual")).latitude);
-        String longitud=Double.toString(((LatLng) Parametros.get("PosicionActual")).longitude);
-
-        HttpClient cliente = new DefaultHttpClient();
-        HttpContext contexto = new BasicHttpContext();
-        HttpPost httppost = new HttpPost("http://192.168.0.13:80/tesis/calculodistanciapuntos.php");
-
         try {
-            /*El objeto HttpPost permite que enviemos una peticion de tipo POST a una URL especificada*/
-            //AÑADIR PARAMETROS
-            List<NameValuePair> parametros = new ArrayList<NameValuePair>();
 
-            parametros.add(new BasicNameValuePair("Latitud",latitud ));
-            parametros.add(new BasicNameValuePair("Longitud", longitud));
-             /*Una vez añadidos los parametros actualizamos la entidad de httppost, esto quiere decir en pocas palabras anexamos los parametros al objeto para que al enviarse al servidor envien los datos que hemos añadido*/
-            httppost.setEntity(new UrlEncodedFormEntity(parametros));
-            HttpResponse response = cliente.execute(httppost, contexto);
-            HttpEntity entity = response.getEntity();
+            HashMap<String,Object> Parametros=params[0];
+            mMap=(GoogleMap)Parametros.get("mMap");
+            List<NameValuePair> parametros = new ArrayList<NameValuePair>();
+            HttpEntity entity = Post.calcularDistanciaCorte((List<NameValuePair>)Parametros.get("ParametrosPost"));
+
             LeerCorteParser parserCorte= new LeerCorteParser();
             List<Corte> Cortes =parserCorte.readJsonStream(entity.getContent());
             return Cortes;

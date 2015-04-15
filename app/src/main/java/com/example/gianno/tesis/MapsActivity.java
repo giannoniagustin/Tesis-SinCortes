@@ -20,6 +20,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MapsActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -104,7 +108,10 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
         }
         parametros=new HashMap<String, Object>();
         parametros.put("mMap", mMap);
-        parametros.put("PosicionActual", latLng);
+        ArrayList<NameValuePair>  parametrosPost= new ArrayList<NameValuePair>();
+        parametrosPost.add(new BasicNameValuePair("Latitud", Double.toString(latLng.latitude)));
+        parametrosPost.add(new BasicNameValuePair("Longitud", Double.toString(latLng.longitude)));
+        parametros.put("ParametrosPost",parametrosPost);
         ObtenerCortesBD cortesBd =new ObtenerCortesBD();
         cortesBd.execute(parametros, null, null);
     }
