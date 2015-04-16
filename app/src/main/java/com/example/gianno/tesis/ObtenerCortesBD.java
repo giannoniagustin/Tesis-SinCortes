@@ -44,8 +44,8 @@ public class ObtenerCortesBD extends AsyncTask <HashMap<String,Object>,Void,List
             HttpEntity entity = Post.calcularDistanciaCorte((List<NameValuePair>)Parametros.get("ParametrosPost"));
 
             LeerCorteParser parserCorte= new LeerCorteParser();
-            List<Corte> Cortes =parserCorte.readJsonStream(entity.getContent());
-            return Cortes;
+            return parserCorte.readJsonStream(entity.getContent());
+
             } catch (Exception e) {
 
             return null;

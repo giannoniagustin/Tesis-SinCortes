@@ -34,7 +34,6 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
     public static final String TAG = MapsActivity.class.getSimpleName();
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private LocationRequest mLocationRequest;
-    private HashMap<String,Object> parametros;
     LatLng latLng;
 
     @Override
@@ -106,14 +105,16 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
         else {
             handleNewLocation(location);
         }
-        parametros=new HashMap<String, Object>();
+        HashMap<String, Object> parametros = new HashMap<String, Object>();
         parametros.put("mMap", mMap);
         ArrayList<NameValuePair>  parametrosPost= new ArrayList<NameValuePair>();
-        parametrosPost.add(new BasicNameValuePair("Latitud", Double.toString(latLng.latitude)));
-        parametrosPost.add(new BasicNameValuePair("Longitud", Double.toString(latLng.longitude)));
+        parametrosPost.add(new BasicNameValuePair("latitudOrigen", Double.toString(latLng.latitude)));
+        parametrosPost.add(new BasicNameValuePair("longitudOrigen", Double.toString(latLng.longitude)));
         parametros.put("ParametrosPost", parametrosPost);
+
         ObtenerCortesBD cortesBd =new ObtenerCortesBD();
         cortesBd.execute(parametros, null, null);
+
         ObtenerRutaGoogle camino =new ObtenerRutaGoogle();
         camino.execute(parametros, null, null);
     }

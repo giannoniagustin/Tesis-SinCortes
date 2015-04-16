@@ -10,6 +10,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -34,7 +35,7 @@ public class ObtenerRutaGoogle extends AsyncTask <HashMap<String,Object>,Void,Li
             HashMap<String,Object> Parametros=params[0];
             mMap=(GoogleMap)Parametros.get("mMap");
             // List<NameValuePair> parametros = new ArrayList<NameValuePair>();
-            HttpEntity entity = Post.calcularRuta(/*(List<NameValuePair>)Parametros.get("ParametrosPost")*/);
+            HttpEntity entity = Post.calcularRuta((List<NameValuePair>)Parametros.get("ParametrosPost"));
             LeerRutaParser parserRuta= new LeerRutaParser();
             return parserRuta.readJsonStream(entity.getContent());
         } catch (Exception e) {

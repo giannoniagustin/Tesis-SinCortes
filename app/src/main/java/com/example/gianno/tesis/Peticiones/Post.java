@@ -29,8 +29,8 @@ public  class Post {
 
     public static HttpEntity calcularDistanciaCorte(List<NameValuePair> parametros) {   try {
         HttpPost httppost = new HttpPost(urlCalcularDistancia);
-         HttpClient cliente=new DefaultHttpClient();;
-         HttpContext contexto=new BasicHttpContext();;
+         HttpClient cliente=new DefaultHttpClient();
+         HttpContext contexto=new BasicHttpContext();
 
 
 
@@ -39,8 +39,8 @@ public  class Post {
 
         httppost.setEntity(new UrlEncodedFormEntity(parametros));
         HttpResponse response = cliente.execute(httppost, contexto);
-        HttpEntity entity = response.getEntity();
-        return  entity;
+        return response.getEntity();
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,17 +48,17 @@ public  class Post {
         }
 
     }
-    public static HttpEntity calcularRuta(/*List<NameValuePair> parametros*/) {   try {
+    public static HttpEntity calcularRuta(List<NameValuePair> parametros) {   try {
         HttpPost httppost = new HttpPost(urlCalcularRuta);
         HttpClient cliente=new DefaultHttpClient();
         HttpContext contexto=new BasicHttpContext();
 
 
 
-        // httppost.setEntity(new UrlEncodedFormEntity(parametros));
+        httppost.setEntity(new UrlEncodedFormEntity(parametros));
         HttpResponse response = cliente.execute(httppost, contexto);
-        HttpEntity entity = response.getEntity();
-        return  entity;
+        return  response.getEntity();
+
 
     } catch (IOException e) {
         e.printStackTrace();

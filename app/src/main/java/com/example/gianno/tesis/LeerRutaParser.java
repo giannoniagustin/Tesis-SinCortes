@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class LeerRutaParser {
 
-    private List<List<HashMap<String, String>>> rutas;
+
 
     public  List<List<HashMap<String,String>>> readJsonStream(InputStream ini) throws IOException, JSONException {
 
@@ -35,9 +35,9 @@ public class LeerRutaParser {
 
         String strJSON = sb.toString();
         JSONObject jsonObj = new JSONObject(strJSON);
-        rutas = parse(jsonObj);
+        return parse(jsonObj);
 
-        return rutas;
+        //return rutas;
     }
     public List<List<HashMap<String,String>>> parse(JSONObject jObject){
         //Este metodo PARSEA el JSONObject que retorna del API de Rutas de Google devolviendo
