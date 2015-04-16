@@ -21,8 +21,9 @@ import java.util.List;
 public  class Post {
 
 
-    //final static String urlCalcularDistancia="http://192.168.0.13:80/tesis/calculodistanciapuntos.php";
-    final static String urlCalcularDistancia="http://192.168.1.68/Tesis/calculodistanciapuntos.php";
+    final static String urlCalcularDistancia="http://192.168.0.13:80/tesis/calculodistanciapuntos.php";
+    //final static String urlCalcularDistancia="http://192.168.1.68/Tesis/calculodistanciapuntos.php";
+    final static String urlCalcularRuta="http://192.168.0.13:80/tesis/calculoruta.php";
 
 
 
@@ -46,8 +47,23 @@ public  class Post {
             return null;
         }
 
+    }
+    public static HttpEntity calcularRuta(/*List<NameValuePair> parametros*/) {   try {
+        HttpPost httppost = new HttpPost(urlCalcularRuta);
+        HttpClient cliente=new DefaultHttpClient();
+        HttpContext contexto=new BasicHttpContext();
 
 
+
+        // httppost.setEntity(new UrlEncodedFormEntity(parametros));
+        HttpResponse response = cliente.execute(httppost, contexto);
+        HttpEntity entity = response.getEntity();
+        return  entity;
+
+    } catch (IOException e) {
+        e.printStackTrace();
+        return null;
+    }
 
     }
 }

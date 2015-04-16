@@ -111,9 +111,11 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
         ArrayList<NameValuePair>  parametrosPost= new ArrayList<NameValuePair>();
         parametrosPost.add(new BasicNameValuePair("Latitud", Double.toString(latLng.latitude)));
         parametrosPost.add(new BasicNameValuePair("Longitud", Double.toString(latLng.longitude)));
-        parametros.put("ParametrosPost",parametrosPost);
+        parametros.put("ParametrosPost", parametrosPost);
         ObtenerCortesBD cortesBd =new ObtenerCortesBD();
         cortesBd.execute(parametros, null, null);
+        ObtenerRutaGoogle camino =new ObtenerRutaGoogle();
+        camino.execute(parametros, null, null);
     }
 
     private void handleNewLocation(Location location) {
